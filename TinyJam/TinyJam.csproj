@@ -85,10 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\bgColorChanger.cs" />
-    <Compile Include="Assets\Scripts\MenuButtons.cs" />
+    <Compile Include="Assets\Scripts\MeshGen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scenes\j.txt" />
+    <None Include="Assets\Scripts\a.txt" />
+    <None Include="Assets\Textures\m.txt" />
     <None Include="Assets\tet.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
