@@ -110,32 +110,6 @@ public class MeshGen : MonoBehaviour
 
         for (int i = 0; i < SegmentResolution; ++i)
         {
-            if (i % 2 != 0)
-            {
-                // get the relative x position
-                float Posx = step * i;
-
-                // top vertex
-                float topPosY = GetHeight(startPosition + Posx); // position passed to GetHeight() must be absolute
-                _vertexArray[i * 2] = new Vector3(Posx, topPosY, 0);
-
-                // bottom vertex always at y=0
-                _vertexArray[i * 2] = new Vector3(Posx, 0, 0);
-
-                float xtoop = _vertexArray[i].x;
-                float ytoop = _vertexArray[i].y;
-
-                // top vertex
-                _vertexColliderArray[i * 2] = new Vector2(xtoop, ytoop);
-
-                // bottom vertex always at y=0
-                _vertexColliderArray[i * 2 + 1] = new Vector2(_vertexArray[i].x, 0);
-
-
-                //_UVArray[i * 2] = new Vector3(Posx, topPosY, 0);
-                //_UVArray[i * 2 + 1] = new Vector3(Posx, 0, 0);
-            }
-
             // get the relative x position
             float xPos = step * i;
 
@@ -144,21 +118,29 @@ public class MeshGen : MonoBehaviour
             _vertexArray[i * 2] = new Vector3(xPos, yPosTop, 0);
 
             // bottom vertex always at y=0
-            _vertexArray[i * 2 + 1] = new Vector3(xPos, 0, 0);
-
-            float xtop = _vertexArray[i].x;
-            float ytop = _vertexArray[i].y;
+            _vertexArray[(i * 2) + 1] = new Vector3(xPos, 0, 0);
 
             // top vertex
-            _vertexColliderArray[i * 2] = new Vector2(xtop, ytop);
+            // the first point has to be y = 0 becuse it needs to complete the perimiter
+            if (i == 0)
+                _vertexColliderArray[i * 2] = new Vector2(xPos, 0); 
+            else
+                _vertexColliderArray[i * 2] = new Vector2(xPos, yPosTop);
+
+            // the first is out of bounds skip it
+            if (i == 0)
+                Debug.Log("it was 0");
+            else
+                // dont forget to set these, below we are doing i*2+1 so thats 2*2+1=5
+                // and so here we do i*2-1 so 2*2-1=3 and 4 is handled earlier
+                _vertexColliderArray[(i * 2) - 1] = new Vector2(xPos, yPosTop);
 
             // bottom vertex always at y=0
-            _vertexColliderArray[i * 2 + 1] = new Vector2(_vertexArray[i].x, 0);
+            _vertexColliderArray[(i * 2) + 1] = new Vector2(xPos, 0);
 
 
             _UVArray[i * 2] = new Vector3(xPos, yPosTop, 0);
             _UVArray[i * 2 + 1] = new Vector3(xPos, 0, 0);
-
         }
 
         mesh.vertices = _vertexArray;
