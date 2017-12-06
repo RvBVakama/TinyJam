@@ -39,7 +39,6 @@ public class MeshGen : MonoBehaviour
 
     void Awake()
     {
-
         // Create vertex array helper
         _vertexArray = new Vector3[SegmentResolution * 2];
         _vertexColliderArray = new Vector2[SegmentResolution * 2];
@@ -120,28 +119,34 @@ public class MeshGen : MonoBehaviour
             // bottom vertex always at y=0
             _vertexArray[(i * 2) + 1] = new Vector3(xPos, 0, 0);
 
-            // top vertex
-            // the first point has to be y = 0 becuse it needs to complete the perimiter
-            if (i == 0)
-                _vertexColliderArray[i * 2] = new Vector2(xPos, 0); 
-            else
-                _vertexColliderArray[i * 2] = new Vector2(xPos, yPosTop);
-
-            // the first is out of bounds skip it
-            if (i == 0)
-                Debug.Log("it was 0");
-            else
-                // dont forget to set these, below we are doing i*2+1 so thats 2*2+1=5
-                // and so here we do i*2-1 so 2*2-1=3 and 4 is handled earlier
-                _vertexColliderArray[(i * 2) - 1] = new Vector2(xPos, yPosTop);
-
-            // bottom vertex always at y=0
-            _vertexColliderArray[(i * 2) + 1] = new Vector2(xPos, 0);
-
+            if (i % 1 == 0)
+            {
+                // if i is 0 then the 0th point
+                if (i == 0)
+                    _vertexColliderArray[i] = new Vector2(xPos, yPosTop);
+                else
+                {
+                    // if i is 1, i*2-1 1st point, if i is 2, i*2-1 3rd point
+                    _vertexColliderArray[(i * 2) - 1] = new Vector2(xPos, yPosTop);
+                    // if i is 1, i*2=2 2nd point, if i is 2, i*2 4th point
+                    _vertexColliderArray[i * 2] = new Vector2(xPos, yPosTop);
+                    // if i is 1, i*2+1 3nd point, if i is 2, i*2+1 5th point
+                    if (i == 31)
+                    {
+                        // placing a point at the bottom right of the segment to complete the perimiter
+                        _vertexColliderArray[i * 2] = new Vector2(xPos, 0);
+                        // placing a point at the bottom left of the segment to complete the perimiter
+                        _vertexColliderArray[(i * 2) + 1] = new Vector2(0, 0);
+                    }
+                    else
+                        _vertexColliderArray[(i * 2) + 1] = new Vector2(xPos, 0);
+                }
+            }
 
             _UVArray[i * 2] = new Vector3(xPos, yPosTop, 0);
             _UVArray[i * 2 + 1] = new Vector3(xPos, 0, 0);
         }
+
 
         mesh.vertices = _vertexArray;
         mesh.uv = _UVArray;
