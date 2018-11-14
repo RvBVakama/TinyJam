@@ -43,3 +43,11 @@ ehthumbs.db
 [Dd]esktop.ini
 Corridor/Library/ShaderCache/
 Corridor/Library/metadata/
+
+/TinyJam/Library/
+/TinyJam/Library
+/TinyJam/Temp/
+dependencies/
+/TinyJam/RWRFlythrough_Data/
+TinyJam/UnityPlayer.dll
+TinyJam/RWRFlythrough.exe
