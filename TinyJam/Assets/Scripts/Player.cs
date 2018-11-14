@@ -1,10 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     Rigidbody2D m_rb;
+
+    private string terrainmask = "Terrain";
+
+    private int m_nLayerMask;
+
+    private void Awake()
+    {
+        m_nLayerMask = LayerMask.GetMask(terrainmask);
+    }
 
     // Use this for initialization
     void Start()
@@ -31,8 +38,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D col)
     {
-        m_rb.AddForce((Vector2.right*0.1f), ForceMode2D.Impulse);
+        RaycastHit2D hit2d = Physics2D.Raycast(gameObject.transform.position, Vector2.down, Mathf.Infinity, m_nLayerMask);
+
+        Vector2 a = Vector2.Perpendicular(hit2d.normal);
+        a = -a;
+        m_rb.AddForce((a * 0.05f), ForceMode2D.Impulse);
         //m_rb.AddForce(new Vector2(100.0f, -100.0f), ForceMode2D.Force);
         Debug.Log("cld ground");
     }
 }
+

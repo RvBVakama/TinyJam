@@ -30,6 +30,7 @@ public class MeshGen : MonoBehaviour
 
     private Vector2[] _UVArray;
 
+    private string terrainmask = "Terrain";
 
 
     // the pool of free mesh filters
@@ -76,7 +77,9 @@ public class MeshGen : MonoBehaviour
         // Assign vertices, triangles, deactivate and add to the pool.
         for (int i = 0; i < MeshCount; ++i)
         {
-            MeshFilter filter = Instantiate(SegmentPrefab);
+           MeshFilter filter = Instantiate(SegmentPrefab);
+
+            filter.gameObject.layer = 9;
 
             Mesh mesh = filter.mesh;
             mesh.Clear();
